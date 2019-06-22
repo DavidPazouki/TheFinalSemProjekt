@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="at.fhooe.mc.android.Arrived.CreateEntry">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nummer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="nummer" />
+
+        <EditText
+            android:id="@+id/nummer1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/nachricht"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="nachricht" />
+
+        <EditText
+            android:id="@+id/nachricht1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/ort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ort" />
+
+        <Button
+            android:id="@+id/createEntry_MapButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OpenMap" />
+
+        <Button
+            android:id="@+id/createbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="create" />
+
+    </LinearLayout>
+</RelativeLayout>

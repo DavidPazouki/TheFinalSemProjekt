@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Arrived</string>
+    <string name="action_settings">Settings</string>
+    <string name="delete_Button">Delete</string>
+    <string name="return_Button">Return</string>
+    <string name="textview">TextView</string>
+    <string name="name">Name:</string>
+
+    <string name="google_maps_api_key">AIzaSyA5H9a4kRFyczsp8WKiGK5MD4w70M1v7XA</string>
+</resources>
