@@ -45,11 +45,12 @@
             android:layout_height="wrap_content"
             android:text="ort" />
 
-        <Button
-            android:id="@+id/createEntry_MapButton"
+        <AutoCompleteTextView
+            android:id="@+id/creatEntry_Search"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="OpenMap" />
+            android:layout_height="39dp"
+            android:hint="Enter Address, City or Zip Code"
+            android:imeOptions="actionSearch" />
 
         <Button
             android:id="@+id/createbutton"

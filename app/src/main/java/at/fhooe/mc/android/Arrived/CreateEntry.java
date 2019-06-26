@@ -2,25 +2,46 @@ package at.fhooe.mc.android.Arrived;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
-public class CreateEntry extends AppCompatActivity {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CreateEntry extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     EditText phoneNumber;
     EditText message;
-    EditText place;
-
+    String place;
+    float lon;
+    float lat;
     private static final String TAG = "CreateEntry";
-    private static final int ERROR_DIALOG_REQUEST = 9001;
+
+
+    //Test
+
+    //widgets
+    private AutoCompleteTextView mSearchText;
 
 
     @Override
@@ -29,17 +50,8 @@ public class CreateEntry extends AppCompatActivity {
         setContentView(R.layout.create_entry);
         phoneNumber = findViewById(R.id.nummer1);
         message = findViewById(R.id.nachricht1);
-
-        //#############################################################################################//
-
-        if(isServicesOK()){
-            init();
-
-        }
-
-        //############################################################################################//
-
-
+        mSearchText = (AutoCompleteTextView) findViewById(R.id.creatEntry_Search);
+        init();
         Button create = findViewById(R.id.createbutton);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,51 +59,61 @@ public class CreateEntry extends AppCompatActivity {
                 Intent i = new Intent();
                 i.putExtra("phoneNumber", phoneNumber.getText().toString());
                 i.putExtra("message", message.getText().toString());
-                i.putExtra("place", place.getText().toString());
+                i.putExtra("address", place);
+                i.putExtra("lon", lon);
+                i.putExtra("lat", lat);
                 setResult(RESULT_OK,i);
                 finish();
             }
         });
     }
 
+
+
     private void init(){
-        Button btnMap = (Button) findViewById(R.id.createEntry_MapButton);
-        btnMap.setOnClickListener(new View.OnClickListener() {
+        Log.d(TAG, "init: initializing");
+
+        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CreateEntry.this, MapActivity.class);
-                startActivity(intent);
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER){
+
+                    //execute our method for searching
+                    geoLocate();
+                }
+
+                return false;
             }
         });
     }
 
-    //###########################################################################################################//
+    private void geoLocate(){
+        Log.d(TAG, "geoLocate: geolocating");
 
-
-
-
-
-    public boolean isServicesOK(){
-        Log.d(TAG, "isServicesOK: checking google services version");
-
-        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-        int available = googleApiAvailability.isGooglePlayServicesAvailable(CreateEntry.this);
-
-        if(available == ConnectionResult.SUCCESS){
-            //alles ist lit
-            Log.d(TAG, "is ServicesOK: Google Play Services is working");
-            return true;
+        String searchString = mSearchText.getText().toString();
+        Geocoder geocoder = new Geocoder(CreateEntry.this);
+        List<Address> list = new ArrayList<>();
+        try{
+            list = geocoder.getFromLocationName(searchString, 1);
+        }catch (IOException e){
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
         }
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
-            //error but we can fix it
-            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(CreateEntry.this, available, ERROR_DIALOG_REQUEST);
-            dialog.show();
-        }else{
-            Toast.makeText(this, "We cannot make mak request", Toast.LENGTH_SHORT).show();
+
+        if(list.size() > 0){
+            Address address = list.get(0);
+            mSearchText.setText(address.getAddressLine(0));
+            place = address.getAddressLine(0);
+            lon = (float) address.getLongitude();
+            lat = (float)address.getLatitude();
+            Log.d(TAG, "geoLocate: found a location: " + address.toString());
         }
-        return false;
     }
 
-    //###########################################################################################################//
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

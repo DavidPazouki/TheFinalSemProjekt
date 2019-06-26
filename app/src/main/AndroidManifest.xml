@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -42,9 +42,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA5H9a4kRFyczsp8WKiGK5MD4w70M1v7XA" />
-
-        <activity android:name=".MapActivity"/>
+            android:value="AIzaSyCi32JlBIyH6pGn1AXUtZ4pefQQ9jDa8r8" />
 
 
         <activity android:name=".CreateEntry" />

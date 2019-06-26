@@ -22,7 +22,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements Comparable<String> {
+public class MainActivity extends AppCompatActivity{
 
     //storing important information
     public ArrayList<String> phoneNumbers = new ArrayList<String>();
@@ -32,21 +32,15 @@ public class MainActivity extends AppCompatActivity implements Comparable<String
     public String newPhoneNumber;
     public String newPlace;
     public int entries;
+    public float newLon;
+    public float newLat;
     CustomListAdapter customListAdapter;
-
 
 
     @Override //this happens when you start the app
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        //################################################################################//
-
-
-
-        //################################################################################//
 
         //get entries out of shared preferences
         entries = getSharedPreferences("entries", 0).getInt("entries", 0);
@@ -88,8 +82,6 @@ public class MainActivity extends AppCompatActivity implements Comparable<String
     }
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
@@ -97,7 +89,9 @@ public class MainActivity extends AppCompatActivity implements Comparable<String
                 if (resultCode == RESULT_OK) {
                     newPhoneNumber = data.getStringExtra("phoneNumber");
                     newMessage = data.getStringExtra("message");
-                    newPlace = data.getStringExtra("place");
+                    newPlace = data.getStringExtra("address");
+                    newLon = data.getFloatExtra("lon", 0);
+                    newLat = data.getFloatExtra("lat", 0);
                     add();
                 }
             }
@@ -142,14 +136,15 @@ public class MainActivity extends AppCompatActivity implements Comparable<String
         messages.add(newMessage);
         addToSharedPreferences();
         customListAdapter.notifyDataSetChanged();
+        startService(new Intent(this,GPSService.class));
         Log.i("xdd", "entry added");
     }
 
     private void addService() {
         Intent i = new Intent(this, GPSService.class);
-        i.putExtra("phoneNumber",newPhoneNumber);
-        i.putExtra("place",newPlace);
-        i.putExtra("message",newMessage);
+        i.putExtra("phoneNumber", newPhoneNumber);
+        i.putExtra("place", newPlace);
+        i.putExtra("message", newMessage);
         startService(i);
     }
 
@@ -161,6 +156,8 @@ public class MainActivity extends AppCompatActivity implements Comparable<String
         editor.putString("message_" + (entries - 1), newMessage);
         editor.putString("phoneNumber_" + (entries - 1), newPhoneNumber);
         editor.putString("place_" + (entries - 1), newPlace);
+        editor.putFloat("lon_" + (entries - 1), newLon);
+        editor.putFloat("lat_" + (entries - 1), newLat);
         editor.putInt("entries", entries);
         editor.commit();
     }
@@ -182,9 +179,11 @@ public class MainActivity extends AppCompatActivity implements Comparable<String
             if (newString != null) {
                 if (newString.equals(deleteName)) {
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.remove("message_" + i);
-                    editor.remove("place_" + i);
-                    editor.remove("phoneNumber_" + i);
+                    editor.remove("message_" + (i-1));
+                    editor.remove("place_" + (i-1));
+                    editor.remove("phoneNumber_" + (i-1));
+                    editor.remove("lon_" + (i-1));
+                    editor.remove("lat_" + (i-1));
                     editor.commit();
                     Log.i("xdd", "entry deleted");
                     return;
@@ -202,10 +201,5 @@ public class MainActivity extends AppCompatActivity implements Comparable<String
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public int compareTo(String s) {
-        return this.compareTo(s);
     }
 }

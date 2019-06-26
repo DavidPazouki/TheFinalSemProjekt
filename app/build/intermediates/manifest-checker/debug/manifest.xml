@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- Permissions required for GCM -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -56,9 +57,8 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA5H9a4kRFyczsp8WKiGK5MD4w70M1v7XA" />
+            android:value="AIzaSyCi32JlBIyH6pGn1AXUtZ4pefQQ9jDa8r8" />
 
-        <activity android:name="at.fhooe.mc.android.Arrived.MapActivity" />
         <activity android:name="at.fhooe.mc.android.Arrived.CreateEntry" />
         <activity android:name="at.fhooe.mc.android.Arrived.InsideListView" />
         <activity
