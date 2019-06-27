@@ -3,8 +3,8 @@ package at.fhooe.mc.android.Arrived;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,9 +32,8 @@ public class CreateEntry extends AppCompatActivity {
     int radius = 2000;
     TextView radiusDisplay;
     SeekBar radiusChanger;
-    private AutoCompleteTextView mSearchText;
     boolean foundLocation = false;
-
+    private AutoCompleteTextView mSearchText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,13 +92,13 @@ public class CreateEntry extends AppCompatActivity {
                     setResult(RESULT_OK, i);
                     finish();
                 } else
-                    Toast.makeText(getApplicationContext(),"Please fill out everything!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please fill out everything!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private boolean everythingFilledOut() {
-        return (!name.getText().toString().equals("") && !phoneNumber.getText().toString().equals("") &&!message.getText().toString().equals("")&&foundLocation);
+        return (!name.getText().toString().equals("") && !phoneNumber.getText().toString().equals("") && !message.getText().toString().equals("") && foundLocation);
     }
 
 
@@ -143,7 +142,7 @@ public class CreateEntry extends AppCompatActivity {
             lon = (float) address.getLongitude();
             lat = (float) address.getLatitude();
             Log.d(TAG, "geoLocate: found a location: " + address.toString());
-        }else{
+        } else {
             foundLocation = false;
         }
     }

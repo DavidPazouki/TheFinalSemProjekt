@@ -1,8 +1,8 @@
 package at.fhooe.mc.android.Arrived;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,21 +14,25 @@ public class InsideListView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inside_listview);
 
-        // display the name
         String savedExtra = getIntent().getStringExtra("name");
         TextView myText = findViewById(R.id.inside_listview_name);
-        myText.setText(savedExtra);
+        myText.setText("Name: " + savedExtra);
 
-        //display the date
+        savedExtra = getIntent().getStringExtra("phoneNumber");
+        myText = findViewById(R.id.inside_listview_phoneNumber);
+        myText.setText("Telefonnummer: " + savedExtra);
+
         savedExtra = getIntent().getStringExtra("message");
-        myText = findViewById(R.id.inside_listview_date);
-        myText.setText(savedExtra);
+        myText = findViewById(R.id.inside_listview_message);
+        myText.setText("Nachricht: " + savedExtra);
 
-
-        //display the date
         savedExtra = getIntent().getStringExtra("place");
-        myText = findViewById(R.id.inside_listview_diff);
-        myText.setText(savedExtra);
+        myText = findViewById(R.id.inside_listview_place);
+        myText.setText("Adresse: " + savedExtra);
+
+        savedExtra = getIntent().getStringExtra("radius");
+        myText = findViewById(R.id.inside_listview_radius);
+        myText.setText("Radius: " + savedExtra);
 
         //the delete button
         Button button = findViewById(R.id.delete);

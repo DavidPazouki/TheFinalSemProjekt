@@ -15,16 +15,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
     //storing important information
     public ArrayList<String> names = new ArrayList<String>();
     public ArrayList<String> messages = new ArrayList<String>();
     public ArrayList<String> places = new ArrayList<String>();
+    public ArrayList<String> phoneNumbers = new ArrayList<String>();
+    public ArrayList<String> radius = new ArrayList<String>();
     public int entries;
     public String newMessage;
     public String newPhoneNumber;
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     public float newLat;
     public int newRadius;
     CustomListAdapter customListAdapter;
-
 
     @Override //this happens when you start the app
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("name", names.get(position));
                 intent.putExtra("message", messages.get(position));
                 intent.putExtra("place", places.get(position));
+                intent.putExtra("phoneNumber", phoneNumbers.get(position));
+                intent.putExtra("radius", radius.get(position));
                 startActivityForResult(intent, 99);
             }
         });
@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -118,18 +117,34 @@ public class MainActivity extends AppCompatActivity {
 
     //loading data
     private void loadData() {
-        names = loadArray("name");
-        messages = loadArray("message");
-        places = loadArray("place");
+        names = loadArrayString("name");
+        messages = loadArrayString("message");
+        places = loadArrayString("place");
+        radius = loadArrayInt("radius");
+        phoneNumbers = loadArrayString("phoneNumber");
     }
 
     //method to get arrays out of shared preferences
-    public ArrayList<String> loadArray(String arrayName) {
+    public ArrayList<String> loadArrayString(String arrayName) {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("entries", MODE_PRIVATE);
         ArrayList<String> list = new ArrayList();
         int count = 0;
         for (int i = 0; i < entries; i++) {
             String newString = prefs.getString(arrayName + "_" + i, null);
+            if (newString != null) {
+                list.add(count, newString);
+                count++;
+            }
+        }
+        return list;
+    }
+
+    public ArrayList<String> loadArrayInt(String arrayName) {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("entries", MODE_PRIVATE);
+        ArrayList<String> list = new ArrayList();
+        int count = 0;
+        for (int i = 0; i < entries; i++) {
+            String newString = String.valueOf(prefs.getInt(arrayName + "_" + i, 0));
             if (newString != null) {
                 list.add(count, newString);
                 count++;

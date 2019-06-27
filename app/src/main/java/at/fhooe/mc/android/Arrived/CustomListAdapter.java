@@ -13,7 +13,6 @@ public class CustomListAdapter extends ArrayAdapter {
 
     //to reference the Activity
     private final Activity context;
-
     private final ArrayList<String> names;
     private final ArrayList<String> messages;
     private final ArrayList<String> places;
@@ -44,7 +43,5 @@ public class CustomListAdapter extends ArrayAdapter {
         messageTextField.setText(message);
         placeTextField.setText(places.get(position));
         return rowView;
-
     }
-
 }
