@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +25,12 @@ public class CreateEntry extends AppCompatActivity {
     String place;
     float lon;
     float lat;
+    int radiusLit;
     private static final String TAG = "CreateEntry";
+
+    TextView textView;
+    SeekBar seekBar;
+
 
 
     //Test
@@ -37,6 +43,55 @@ public class CreateEntry extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_entry);
+
+
+        //ProgrssBar
+
+        textView = (TextView) findViewById(R.id.textView1);
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (progress <= 8) {
+                    progress = progress * 100 + 100;
+                    textView.setText("" + progress + "m");
+                    radiusLit = progress;
+                } else if (progress == 19) {
+                    textView.setText("" + "20km");
+                    radiusLit = 20000;
+                } else if (progress == 20) {
+                    textView.setText("" + "50km");
+                    radiusLit = 50000;
+                } else {
+                    progress = progress - 8;
+                    textView.setText("" + progress + "km");
+                    radiusLit = progress * 1000;
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
         phoneNumber = findViewById(R.id.nummer1);
         message = findViewById(R.id.nachricht1);
         mSearchText = (AutoCompleteTextView) findViewById(R.id.creatEntry_Search);
