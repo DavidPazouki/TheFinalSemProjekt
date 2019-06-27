@@ -61,6 +61,7 @@ public class GPSService extends Service {
                 for (int i = 0; i < entries; i++) {
                     if (!phoneNumber[i].equals("")) {
                         if (getDistance(lon1[i], lat1[i], location.getLongitude(), location.getLatitude()) < radius) {
+                            phoneNumber[i] = "";
                             Log.i(TAG, "sending sms");
                             SmsManager smsManager = SmsManager.getDefault();
                             smsManager.sendTextMessage(phoneNumber[i], null, message[i], null, null);
@@ -70,7 +71,6 @@ public class GPSService extends Service {
                                     .setContentTitle("Arrived")
                                     .setContentText("A message has been sent to " + phoneNumber[i]);
                             notificationManager.notify(0, builder.build());
-                            phoneNumber[i] = "";
                             SharedPreferences.Editor editor = sharedPreferences1.edit();
                             editor.remove("message_" + (i));
                             editor.remove("place_" + (i));
