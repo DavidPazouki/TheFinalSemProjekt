@@ -20,7 +20,7 @@ import android.util.Log;
 public class GPSService extends Service {
 
     private static final String TAG = "xdd";
-    double radius;
+    int[] radius;
     String[] phoneNumber;
     String[] message;
     float[] lon1;
@@ -38,18 +38,20 @@ public class GPSService extends Service {
     public void onCreate() {
         Log.i(TAG, "Service started");
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("entries", 0);
-        radius = 10;
+
         entries = sharedPreferences.getInt("entries", 0);
         phoneNumber = new String[entries];
         message = new String[entries];
         lon1 = new float[entries];
         lat1 = new float[entries];
+        radius = new int[entries];
         for (int i = 0; i < entries; i++) {
             phoneNumber[i] = sharedPreferences.getString("phoneNumber_" + i, "");
             message[i] = sharedPreferences.getString("message_" + i, "");
             lon1[i] = sharedPreferences.getFloat("lon_" + i, 0);
             lat1[i] = sharedPreferences.getFloat("lat_" + i, 0);
-            Log.i(TAG, "searching for" + lon1[i] + " " + lat1[i]);
+            radius[i] = sharedPreferences.getInt("radius_"+ i,0);
+            Log.i(TAG, "searching for" + lon1[i] + " " + lat1[i] + "in" + radius[i]);
         }
         Log.i(TAG, "loaded entries");
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
@@ -60,7 +62,7 @@ public class GPSService extends Service {
                 SharedPreferences sharedPreferences1 = getApplicationContext().getSharedPreferences("entries", 0);
                 for (int i = 0; i < entries; i++) {
                     if (!phoneNumber[i].equals("")) {
-                        if (getDistance(lon1[i], lat1[i], location.getLongitude(), location.getLatitude()) < radius) {
+                        if (getDistance(lon1[i], lat1[i], location.getLongitude(), location.getLatitude()) < radius[i]) {
                             phoneNumber[i] = "";
                             Log.i(TAG, "sending sms");
                             SmsManager smsManager = SmsManager.getDefault();
@@ -100,9 +102,10 @@ public class GPSService extends Service {
         };
         //noinspection MissingPermission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "no permission granted");
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 0, locationListener);
 
         super.onCreate();
     }
@@ -128,8 +131,8 @@ public class GPSService extends Service {
                         Math.cos(lati2);
         double rad = 6371;
         double c = 2 * Math.asin(Math.sqrt(a));
-        Log.i(TAG, "distance: " + rad * c);
-        return rad * c;
+        Log.i(TAG, "distance: " + rad * c+"km");
+        return rad * c * 1000;
     }
 
     @Override

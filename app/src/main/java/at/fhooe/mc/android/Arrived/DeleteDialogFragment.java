@@ -8,11 +8,11 @@ import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
 
 public class DeleteDialogFragment extends DialogFragment {
-    public String deletePhoneNumber;
+    public String deleteName;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        deletePhoneNumber = getArguments().getString("phoneNumber");
+        deleteName = getArguments().getString("name");
         AlertDialog.Builder bob = new AlertDialog.Builder(getContext());
         bob.setMessage("You really wanna delete???");
         //if okay: make toast, item gets deleted in main activity
@@ -20,8 +20,7 @@ public class DeleteDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getContext(), "rip", Toast.LENGTH_SHORT).show();
-               //problem
-                ((InsideListView)getActivity()).itemGetsDeleted(deletePhoneNumber);
+                ((InsideListView)getActivity()).itemGetsDeleted(deleteName);
             }
         });
         //if cancel: nothing happens

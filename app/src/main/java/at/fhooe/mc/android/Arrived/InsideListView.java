@@ -15,7 +15,7 @@ public class InsideListView extends AppCompatActivity {
         setContentView(R.layout.inside_listview);
 
         // display the name
-        String savedExtra = getIntent().getStringExtra("phoneNumber");
+        String savedExtra = getIntent().getStringExtra("name");
         TextView myText = findViewById(R.id.inside_listview_name);
         myText.setText(savedExtra);
 
@@ -35,7 +35,7 @@ public class InsideListView extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DeleteDialogFragment deleteDialogFragment = newInstance(getIntent().getStringExtra("phoneNumber"));
+                DeleteDialogFragment deleteDialogFragment = newInstance(getIntent().getStringExtra("name"));
                 deleteDialogFragment.show(getSupportFragmentManager(), "delete");
             }
         });
@@ -54,14 +54,14 @@ public class InsideListView extends AppCompatActivity {
         DeleteDialogFragment f = new DeleteDialogFragment();
         // Supply name input as an argument.
         Bundle args = new Bundle();
-        args.putString("phoneNumber", name);
+        args.putString("name", name);
         f.setArguments(args);
         return f;
     }
 
-    public void itemGetsDeleted(String deleteName) {
+    public void itemGetsDeleted(String name) {
         Intent i = new Intent();
-        i.putExtra("deletePhoneNumber", deleteName);
+        i.putExtra("name", name);
         setResult(RESULT_OK, i);
         finish();
     }

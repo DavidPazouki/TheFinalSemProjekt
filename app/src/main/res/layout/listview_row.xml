@@ -23,7 +23,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/nameTextViewID"
+            android:id="@+id/nameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/textview"
@@ -31,7 +31,14 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/infoTextViewID"
+            android:id="@+id/messageTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/placeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"

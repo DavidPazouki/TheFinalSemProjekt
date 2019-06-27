@@ -11,39 +11,29 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Name" />
+
+        <EditText
             android:id="@+id/nummer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="nummer" />
+            android:ems="10"
+            android:inputType="number"
+            android:hint="Telefonnummer"/>/>
 
         <EditText
-            android:id="@+id/nummer1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name" />
-
-        <TextView
             android:id="@+id/nachricht"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="nachricht" />
-
-        <EditText
-            android:id="@+id/nachricht1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
-
-        <TextView
-            android:id="@+id/ort"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ort" />
+            android:hint="Nachricht"/>
 
         <AutoCompleteTextView
             android:id="@+id/creatEntry_Search"
@@ -58,9 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="24dp"
-            android:text="0%"
+            android:text="Radius: 2 km"
             android:textSize="30sp"/>
-
 
         <SeekBar
             android:layout_width="match_parent"
@@ -70,8 +59,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:max="20"
-            android:progress="1" />
-
+            android:progress="10" />
 
         <Button
             android:id="@+id/createbutton"

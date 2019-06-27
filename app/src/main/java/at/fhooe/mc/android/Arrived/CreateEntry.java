@@ -14,59 +14,56 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateEntry extends AppCompatActivity {
 
+    private static final String TAG = "CreateEntry";
+    EditText name;
     EditText phoneNumber;
     EditText message;
     String place;
     float lon;
     float lat;
-    int radiusLit;
-    private static final String TAG = "CreateEntry";
-
-    TextView textView;
-    SeekBar seekBar;
-
-
-
-    //Test
-
-    //widgets
+    int radius = 2000;
+    TextView radiusDisplay;
+    SeekBar radiusChanger;
     private AutoCompleteTextView mSearchText;
+    boolean foundLocation = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_entry);
-
-
-        //ProgrssBar
-
-        textView = (TextView) findViewById(R.id.textView1);
-        seekBar = (SeekBar) findViewById(R.id.seekBar);
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        name = findViewById(R.id.name);
+        phoneNumber = findViewById(R.id.nummer);
+        message = findViewById(R.id.nachricht);
+        mSearchText = findViewById(R.id.creatEntry_Search);
+        init();
+        radiusDisplay = findViewById(R.id.textView1);
+        radiusChanger = findViewById(R.id.seekBar);
+        radiusChanger.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (progress <= 8) {
                     progress = progress * 100 + 100;
-                    textView.setText("" + progress + "m");
-                    radiusLit = progress;
+                    radiusDisplay.setText("Radius: " + progress + " m");
+                    radius = progress;
                 } else if (progress == 19) {
-                    textView.setText("" + "20km");
-                    radiusLit = 20000;
+                    radiusDisplay.setText("Radius: 20 km");
+                    radius = 20000;
                 } else if (progress == 20) {
-                    textView.setText("" + "50km");
-                    radiusLit = 50000;
+                    radiusDisplay.setText("Radius: 50 km");
+                    radius = 50000;
                 } else {
                     progress = progress - 8;
-                    textView.setText("" + progress + "km");
-                    radiusLit = progress * 1000;
+                    radiusDisplay.setText("Radius: " + progress + " km");
+                    radius = progress * 1000;
                 }
             }
 
@@ -80,50 +77,42 @@ public class CreateEntry extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-        phoneNumber = findViewById(R.id.nummer1);
-        message = findViewById(R.id.nachricht1);
-        mSearchText = (AutoCompleteTextView) findViewById(R.id.creatEntry_Search);
-        init();
         Button create = findViewById(R.id.createbutton);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent();
-                i.putExtra("phoneNumber", phoneNumber.getText().toString());
-                i.putExtra("message", message.getText().toString());
-                i.putExtra("address", place);
-                i.putExtra("lon", lon);
-                i.putExtra("lat", lat);
-                setResult(RESULT_OK,i);
-                finish();
+                if (everythingFilledOut()) {
+                    Intent i = new Intent();
+                    i.putExtra("name", name.getText().toString());
+                    i.putExtra("phoneNumber", phoneNumber.getText().toString());
+                    i.putExtra("message", message.getText().toString());
+                    i.putExtra("address", place);
+                    i.putExtra("lon", lon);
+                    i.putExtra("lat", lat);
+                    i.putExtra("radius", radius);
+                    setResult(RESULT_OK, i);
+                    finish();
+                } else
+                    Toast.makeText(getApplicationContext(),"Please fill out everything!",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private boolean everythingFilledOut() {
+        return (!name.getText().toString().equals("") && !phoneNumber.getText().toString().equals("") &&!message.getText().toString().equals("")&&foundLocation);
+    }
 
 
-    private void init(){
+    private void init() {
         Log.d(TAG, "init: initializing");
 
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
                         || actionId == EditorInfo.IME_ACTION_DONE
                         || keyEvent.getAction() == KeyEvent.ACTION_DOWN
-                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER){
+                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
 
                     //execute our method for searching
                     geoLocate();
@@ -134,25 +123,28 @@ public class CreateEntry extends AppCompatActivity {
         });
     }
 
-    private void geoLocate(){
+    private void geoLocate() {
         Log.d(TAG, "geoLocate: geolocating");
 
         String searchString = mSearchText.getText().toString();
         Geocoder geocoder = new Geocoder(CreateEntry.this);
         List<Address> list = new ArrayList<>();
-        try{
+        try {
             list = geocoder.getFromLocationName(searchString, 1);
-        }catch (IOException e){
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
+        } catch (IOException e) {
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
         }
 
-        if(list.size() > 0){
+        if (list.size() > 0) {
+            foundLocation = true;
             Address address = list.get(0);
             mSearchText.setText(address.getAddressLine(0));
             place = address.getAddressLine(0);
             lon = (float) address.getLongitude();
-            lat = (float)address.getLatitude();
+            lat = (float) address.getLatitude();
             Log.d(TAG, "geoLocate: found a location: " + address.toString());
+        }else{
+            foundLocation = false;
         }
     }
 }
