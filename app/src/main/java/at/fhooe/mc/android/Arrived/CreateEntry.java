@@ -1,10 +1,8 @@
 package at.fhooe.mc.android.Arrived;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,20 +13,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateEntry extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class CreateEntry extends AppCompatActivity {
 
     EditText phoneNumber;
     EditText message;
@@ -110,10 +99,5 @@ public class CreateEntry extends AppCompatActivity implements GoogleApiClient.On
             lat = (float)address.getLatitude();
             Log.d(TAG, "geoLocate: found a location: " + address.toString());
         }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 }

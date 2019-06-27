@@ -1,8 +1,10 @@
 package at.fhooe.mc.android.Arrived;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,10 +17,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.ArrayList;
 
@@ -42,9 +41,18 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //checking permissions
+        if(checkSelfPermission(android.Manifest.permission.SEND_SMS)==PackageManager.PERMISSION_DENIED||checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_DENIED)
+            requestPermissions(new String[]{Manifest.permission.SEND_SMS,Manifest.permission.ACCESS_FINE_LOCATION},0);
+
+        //reset service
+        stopService(new Intent(this,GPSService.class));
+        startService(new Intent(this,GPSService.class));
+
         //get entries out of shared preferences
         entries = getSharedPreferences("entries", 0).getInt("entries", 0);
         loadData();
+
         //create toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,6 +88,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
+
 
 
     @Override
@@ -130,22 +139,14 @@ public class MainActivity extends AppCompatActivity{
 
     //if name and date are set:
     public void add() {
-        addService();
         places.add(newPlace);
         phoneNumbers.add(newPhoneNumber);
         messages.add(newMessage);
         addToSharedPreferences();
         customListAdapter.notifyDataSetChanged();
+        stopService(new Intent(this,GPSService.class));
         startService(new Intent(this,GPSService.class));
         Log.i("xdd", "entry added");
-    }
-
-    private void addService() {
-        Intent i = new Intent(this, GPSService.class);
-        i.putExtra("phoneNumber", newPhoneNumber);
-        i.putExtra("place", newPlace);
-        i.putExtra("message", newMessage);
-        startService(i);
     }
 
     //the process of adding new stuff to the shared preferences
@@ -170,20 +171,22 @@ public class MainActivity extends AppCompatActivity{
         messages.remove(x);
         places.remove(x);
         customListAdapter.notifyDataSetChanged();
+        stopService(new Intent(this,GPSService.class));
+        startService(new Intent(this,GPSService.class));
     }
 
     public void deleteInSharedPreferences(String deleteName) {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("entries", 0);
         for (int i = 0; i < entries; i++) {
-            String newString = prefs.getString("names_" + i, null);
+            String newString = prefs.getString("phoneNumber_" + (i), null);
             if (newString != null) {
                 if (newString.equals(deleteName)) {
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.remove("message_" + (i-1));
-                    editor.remove("place_" + (i-1));
-                    editor.remove("phoneNumber_" + (i-1));
-                    editor.remove("lon_" + (i-1));
-                    editor.remove("lat_" + (i-1));
+                    editor.remove("message_" + (i));
+                    editor.remove("place_" + (i));
+                    editor.remove("phoneNumber_" + (i));
+                    editor.remove("lon_" + (i));
+                    editor.remove("lat_" + (i));
                     editor.commit();
                     Log.i("xdd", "entry deleted");
                     return;

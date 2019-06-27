@@ -1,6 +1,7 @@
 package at.fhooe.mc.android.Arrived;
 
 import android.Manifest;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 
@@ -19,10 +21,11 @@ public class GPSService extends Service {
 
     private static final String TAG = "xdd";
     double radius;
-    String phoneNumber;
-    String message;
-    double lon1;
-    double lat1;
+    String[] phoneNumber;
+    String[] message;
+    float[] lon1;
+    float[] lat1;
+    int entries;
     private LocationManager locationManager;
     private LocationListener locationListener;
 
@@ -33,24 +36,50 @@ public class GPSService extends Service {
 
     @Override
     public void onCreate() {
-        radius = 10;
+        Log.i(TAG, "Service started");
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("entries", 0);
-        int entries = sharedPreferences.getInt("entries", -1);
-        phoneNumber = sharedPreferences.getString("phoneNumber_" + (entries - 1), "");
-        message = sharedPreferences.getString("message_" + (entries - 1), "");
-        lon1 = sharedPreferences.getFloat("lon_" + (entries - 1), 0);
-        lat1 = sharedPreferences.getFloat("lat_" + (entries - 1), 0);
-        Log.e(TAG, "ziellocation " + lon1 + " " + lat1);
+        radius = 10;
+        entries = sharedPreferences.getInt("entries", 0);
+        phoneNumber = new String[entries];
+        message = new String[entries];
+        lon1 = new float[entries];
+        lat1 = new float[entries];
+        for (int i = 0; i < entries; i++) {
+            phoneNumber[i] = sharedPreferences.getString("phoneNumber_" + i, "");
+            message[i] = sharedPreferences.getString("message_" + i, "");
+            lon1[i] = sharedPreferences.getFloat("lon_" + i, 0);
+            lat1[i] = sharedPreferences.getFloat("lat_" + i, 0);
+            Log.i(TAG, "searching for" + lon1[i] + " " + lat1[i]);
+        }
+        Log.i(TAG, "loaded entries");
+        locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 Log.e(TAG, "onLocationChanged: " + location);
-                if (getDistance(lon1, lat1, location.getLongitude(), location.getLatitude()) < radius) {
-                    Log.i(TAG, "sending sms");
-                    SmsManager bat = SmsManager.getDefault();
-                    bat.sendTextMessage(phoneNumber, null, message, null, null);
-                    stopService(new Intent(GPSService.this, CreateEntry.class));
-                    stopSelf();
+                SharedPreferences sharedPreferences1 = getApplicationContext().getSharedPreferences("entries", 0);
+                for (int i = 0; i < entries; i++) {
+                    if (!phoneNumber[i].equals("")) {
+                        if (getDistance(lon1[i], lat1[i], location.getLongitude(), location.getLatitude()) < radius) {
+                            Log.i(TAG, "sending sms");
+                            SmsManager smsManager = SmsManager.getDefault();
+                            smsManager.sendTextMessage(phoneNumber[i], null, message[i], null, null);
+                            NotificationManager notificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "")
+                                    .setSmallIcon(R.drawable.ic_gps)
+                                    .setContentTitle("Arrived")
+                                    .setContentText("A message has been sent to " + phoneNumber[i]);
+                            notificationManager.notify(0, builder.build());
+                            phoneNumber[i] = "";
+                            SharedPreferences.Editor editor = sharedPreferences1.edit();
+                            editor.remove("message_" + (i));
+                            editor.remove("place_" + (i));
+                            editor.remove("phoneNumber_" + (i));
+                            editor.remove("lon_" + (i));
+                            editor.remove("lat_" + (i));
+                            editor.commit();
+                        }
+                    }
                 }
             }
 
@@ -69,13 +98,12 @@ public class GPSService extends Service {
                 Log.e(TAG, "onStatusChanged: " + provider);
             }
         };
-        locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-
         //noinspection MissingPermission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, locationListener);
+
         super.onCreate();
     }
 
@@ -102,5 +130,11 @@ public class GPSService extends Service {
         double c = 2 * Math.asin(Math.sqrt(a));
         Log.i(TAG, "distance: " + rad * c);
         return rad * c;
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "service destroyed");
+        super.onDestroy();
     }
 }
