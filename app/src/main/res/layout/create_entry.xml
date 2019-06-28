@@ -16,31 +16,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Name" />
+            android:inputType="textPersonName|textNoSuggestions"
+            android:maxLength="30"
+            android:maxLines="1"
+            android:hint="Enter name"
+            android:padding="10dp"
+            android:background="@drawable/edittext_design"
+            android:textSize="24dp"/>
 
         <EditText
             android:id="@+id/nummer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="number"
-            android:hint="Telefonnummer"/>/>
+            android:inputType="number|numberDecimal"
+            android:maxLines="1"
+            android:maxLength="12"
+            android:hint="Enter telephone number"
+            android:padding="10dp"
+            android:background="@drawable/edittext_design"
+            android:textSize="24dp"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/creatEntry_Search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter address, city or zip code"
+            android:inputType="textPostalAddress"
+            android:maxLines="1"
+            android:maxLength="40"
+            android:imeOptions="actionSearch"
+            android:padding="10dp"
+            android:background="@drawable/edittext_design"
+            android:textSize="24dp"/>
 
         <EditText
             android:id="@+id/nachricht"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Nachricht"/>
-
-        <AutoCompleteTextView
-            android:id="@+id/creatEntry_Search"
-            android:layout_width="match_parent"
-            android:layout_height="39dp"
-            android:hint="Enter Address, City or Zip Code"
-            android:imeOptions="actionSearch" />
+            android:inputType="textNoSuggestions|textMultiLine"
+            android:minLines="3"
+            android:maxLines="3"
+            android:maxLength="100"
+            android:hint="Enter message"
+            android:padding="10dp"
+            android:background="@drawable/edittext_design"
+            android:textSize="24dp"/>
 
         <TextView
             android:id="@+id/textView1"
@@ -49,13 +71,16 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="24dp"
             android:text="Radius: 2 km"
-            android:textSize="30sp"/>
+            android:textColor="@color/quantum_greyblack1000"
+            android:padding="10dp"
+            android:textSize="24dp"/>
 
         <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:id="@+id/seekBar"
+            android:padding="10dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:max="20"
@@ -65,7 +90,8 @@
             android:id="@+id/createbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="create" />
-
+            android:background="@drawable/button_design"
+            android:text="create"
+            />
     </LinearLayout>
 </RelativeLayout>

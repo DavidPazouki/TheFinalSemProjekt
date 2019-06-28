@@ -15,8 +15,7 @@
             android:id="@+id/inside_listview_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_thin"
-            android:textAlignment="center"
+            android:fontFamily="@font/roboto"
             android:textSize="21sp" />
 
         <TextView
@@ -24,24 +23,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
-            android:textAlignment="center"
             android:textSize="21sp" />
 
         <TextView
             android:id="@+id/inside_listview_message"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:textSize="21sp"/>
 
         <TextView
             android:id="@+id/inside_listview_place"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:textSize="21sp"/>
 
         <TextView
             android:id="@+id/inside_listview_radius"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp" />
+            android:fontFamily="@font/roboto"
+            android:textSize="21sp" />
 
         <Button
             android:id="@+id/delete"

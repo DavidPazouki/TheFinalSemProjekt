@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AppSettings">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="20sp"
+            android:id="@+id/options_delayText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location query delay: 20 s"
+            android:textSize="25sp" />
+
+        <SeekBar
+            android:id="@+id/options_delaySeekBar"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="20"
+            android:progress="10" />
+
+        <Switch
+            android:id="@+id/switch3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:saveEnabled="true"
+
+            android:text="newest entry first"
+            android:textSize="25sp" />
+    </LinearLayout>
+</FrameLayout>

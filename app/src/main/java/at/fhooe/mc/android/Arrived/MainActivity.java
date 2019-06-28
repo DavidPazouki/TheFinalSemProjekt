@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     //storing important information
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         startService(new Intent(this, GPSService.class));
 
         //get entries out of shared preferences
-        entries = getSharedPreferences("entries", 0).getInt("entries", 0);
+        entries = getSharedPreferences("entries", MODE_PRIVATE).getInt("entries", 0);
         loadData();
 
         //create toolbar
@@ -122,6 +124,13 @@ public class MainActivity extends AppCompatActivity {
         places = loadArrayString("place");
         radius = loadArrayInt("radius");
         phoneNumbers = loadArrayString("phoneNumber");
+        if (getSharedPreferences("entries",MODE_PRIVATE).getBoolean("switch",false)){
+            Collections.reverse(names);
+            Collections.reverse(messages);
+            Collections.reverse(places);
+            Collections.reverse(radius);
+            Collections.reverse(phoneNumbers);
+        }
     }
 
     //method to get arrays out of shared preferences
@@ -158,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
         places.add(newPlace);
         names.add(newName);
         messages.add(newMessage);
+        phoneNumbers.add(newPhoneNumber);
+        radius.add(String.valueOf(newRadius));
         addToSharedPreferences();
         customListAdapter.notifyDataSetChanged();
         stopService(new Intent(this, GPSService.class));
@@ -168,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     //the process of adding new stuff to the shared preferences
     private void addToSharedPreferences() {
         entries++;
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("entries", 0);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("entries", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("name_"+(entries-1), newName);
         editor.putString("message_" + (entries - 1), newMessage);
@@ -194,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deleteInSharedPreferences(String deleteName) {
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences("entries", 0);
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("entries", MODE_PRIVATE);
         for (int i = 0; i < entries; i++) {
             String newString = prefs.getString("name_" + (i), null);
             if (newString != null) {
@@ -223,6 +234,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(MainActivity.this, AppSettings.class);
+        startActivity(intent);
         return super.onOptionsItemSelected(item);
     }
 }
