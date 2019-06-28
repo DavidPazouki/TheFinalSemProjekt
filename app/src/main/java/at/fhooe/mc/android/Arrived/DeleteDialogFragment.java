@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,7 +14,8 @@ public class DeleteDialogFragment extends DialogFragment {
     private static final String TAG = "xdd";
     public String deleteName;
 
-    @Override
+    @NonNull
+    @Override //when dialog gets created
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Log.i(TAG, "DeleteDialogFragment::onCreateDialog(): dialog created");
         deleteName = getArguments().getString("name");
@@ -35,7 +37,6 @@ public class DeleteDialogFragment extends DialogFragment {
                 Log.i(TAG, "DeleteDialogFragment::onCreateDialog(): return to InsideListView");
             }
         });
-        Dialog d = bob.create();
-        return d;
+        return bob.create();
     }
 }

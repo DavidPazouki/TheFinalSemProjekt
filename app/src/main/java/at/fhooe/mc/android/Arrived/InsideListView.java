@@ -16,7 +16,7 @@ public class InsideListView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inside_listview);
-
+        //the 5 edittexts
         String savedExtra = getIntent().getStringExtra("name");
         TextView myText = findViewById(R.id.inside_listview_name);
         myText.setText("Name: " + savedExtra);
@@ -35,7 +35,7 @@ public class InsideListView extends AppCompatActivity {
 
         savedExtra = getIntent().getStringExtra("radius");
         myText = findViewById(R.id.inside_listview_radius);
-        myText.setText("Radius: " + savedExtra);
+        myText.setText("Radius: " + savedExtra + " m");
 
         //the delete button
         Button button = findViewById(R.id.delete);
@@ -47,7 +47,6 @@ public class InsideListView extends AppCompatActivity {
                 deleteDialogFragment.show(getSupportFragmentManager(), "delete");
             }
         });
-
         //the return button
         button = findViewById(R.id.returning);
         button.setOnClickListener(new View.OnClickListener() {

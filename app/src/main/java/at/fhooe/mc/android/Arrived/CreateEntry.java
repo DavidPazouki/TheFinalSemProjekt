@@ -35,11 +35,13 @@ public class CreateEntry extends AppCompatActivity {
     boolean foundLocation = false;
     private AutoCompleteTextView mSearchText;
 
-    @Override
+    @Override //after fab has been pressed
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "CreateEntry::onCreate(): activity created");
+        radius = 2000;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_entry);
+        //get ids
         name = findViewById(R.id.name);
         phoneNumber = findViewById(R.id.nummer);
         message = findViewById(R.id.nachricht);
@@ -80,6 +82,7 @@ public class CreateEntry extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (everythingFilledOut()) {
+                    //if every field is filled out and the geolocation api has found something
                     Log.i(TAG, "CreateEntry::onClick(): returning new entry");
                     Intent i = new Intent();
                     i.putExtra("name", name.getText().toString());
@@ -99,10 +102,12 @@ public class CreateEntry extends AppCompatActivity {
         });
     }
 
+    //just a huge condition
     private boolean everythingFilledOut() {
         return (!name.getText().toString().equals("") && !phoneNumber.getText().toString().equals("") && !message.getText().toString().equals("") && foundLocation);
     }
 
+    //initialize the geolocation edittext
     private void init() {
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -118,6 +123,7 @@ public class CreateEntry extends AppCompatActivity {
         });
     }
 
+    //using the api to find a location
     private void geoLocate() {
         String searchString = mSearchText.getText().toString();
         Geocoder geocoder = new Geocoder(CreateEntry.this);

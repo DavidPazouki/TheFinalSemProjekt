@@ -18,7 +18,7 @@ public class CustomListAdapter extends ArrayAdapter {
     private final ArrayList<String> messages;
     private final ArrayList<String> places;
 
-    public CustomListAdapter(Activity context, ArrayList<String> names, ArrayList<String> messages,ArrayList<String>places) {
+    CustomListAdapter(Activity context, ArrayList<String> names, ArrayList<String> messages, ArrayList<String> places) {
         super(context, R.layout.listview_row, names);
         this.context = context;
         this.names = names;
@@ -35,6 +35,7 @@ public class CustomListAdapter extends ArrayAdapter {
         TextView messageTextField = rowView.findViewById(R.id.messageTextView);
         TextView placeTextField = rowView.findViewById(R.id.placeTextView);
 
+        //cuts the message if too long
         String message = messages.get(position);
         if(message.length()>35)
             message= message.substring(0,35)+"...";
