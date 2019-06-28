@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
+
     //storing important information
+    private static final String TAG = "xdd";
     public ArrayList<String> names = new ArrayList<String>();
     public ArrayList<String> messages = new ArrayList<String>();
     public ArrayList<String> places = new ArrayList<String>();
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.i(TAG, "MainActivity::onCreate(): app started");
         //checking permissions
         if (checkSelfPermission(android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED || checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED || checkSelfPermission(android.Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED)
             requestPermissions(new String[]{Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}, 0);
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
+                Log.i(TAG, "MainActivity::onCreate(): switching to InsideListView.class");
                 Intent intent = new Intent(MainActivity.this, InsideListView.class);
                 intent.putExtra("name", names.get(position));
                 intent.putExtra("message", messages.get(position));
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i(TAG, "MainActivity::onCreate():clicked on fab");
                 Intent intent = new Intent(MainActivity.this, CreateEntry.class);
                 startActivityForResult(intent, 0);
             }
@@ -171,9 +175,9 @@ public class MainActivity extends AppCompatActivity {
         radius.add(String.valueOf(newRadius));
         addToSharedPreferences();
         customListAdapter.notifyDataSetChanged();
+        Log.i(TAG, "MainActivity::add(): entry added");
         stopService(new Intent(this, GPSService.class));
         startService(new Intent(this, GPSService.class));
-        Log.i("xdd", "entry added");
     }
 
     //the process of adding new stuff to the shared preferences
@@ -200,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
         messages.remove(x);
         places.remove(x);
         customListAdapter.notifyDataSetChanged();
+        Log.i(TAG, "MainActivity::delete(): entry deleted");
         stopService(new Intent(this, GPSService.class));
         startService(new Intent(this, GPSService.class));
     }
@@ -219,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.remove("lat_" + (i));
                     editor.remove("radius_" + (i));
                     editor.commit();
-                    Log.i("xdd", "entry deleted");
+                    Log.i(TAG, "entry deleted");
                     return;
                 }
             }

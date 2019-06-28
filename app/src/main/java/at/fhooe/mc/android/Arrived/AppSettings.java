@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 public class AppSettings extends AppCompatActivity {
 
+    private static final String TAG = "xdd";
     TextView delayDisplay;
     SeekBar delayChanger;
     int delay;

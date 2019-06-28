@@ -39,7 +39,7 @@ public class GPSService extends Service {
 
     @Override
     public void onCreate() {
-        Log.i(TAG, "Service started");
+        Log.i(TAG, "GPSService::onCreate(): service started");
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("entries", MODE_PRIVATE);
         entries = sharedPreferences.getInt("entries", 0);
         phoneNumber = new String[entries];
@@ -54,14 +54,14 @@ public class GPSService extends Service {
             lat1[i] = sharedPreferences.getFloat("lat_" + i, 0);
             radius[i] = sharedPreferences.getInt("radius_" + i, 0);
             if (radius[i] != 0)
-                Log.i(TAG, "searching for" + lon1[i] + " " + lat1[i] + "in" + radius[i]);
+                Log.i(TAG, "GPSService::onCreate():searching for" + lon1[i] + " " + lat1[i] + "in" + radius[i]);
         }
-        Log.i(TAG, "loaded entries");
+        Log.i(TAG, "GPSService::onCreate():loaded entries");
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.e(TAG, "onLocationChanged: " + location);
+                Log.i(TAG, "GPSService::onLocationChanged(): " + location);
                 SharedPreferences sharedPreferences1 = getApplicationContext().getSharedPreferences("entries", MODE_PRIVATE);
                 for (int i = 0; i < entries; i++) {
                     if (!phoneNumber[i].equals("")) {
@@ -70,7 +70,7 @@ public class GPSService extends Service {
                             phoneNumber[i] = "";
                             lon1[i] = 0;
                             lat1[i] = 0;
-                            Log.i(TAG, "sending sms");
+                            Log.i(TAG, "GPSService::onLocationChanged(): sending sms to: "+ number);
                             SmsManager smsManager = SmsManager.getDefault();
                             smsManager.sendTextMessage(number, null, message[i] + "\n-sent by Arrived", null, null);
                             NotificationChannel notificationChannel = new NotificationChannel("sms", "sms", NotificationManager.IMPORTANCE_DEFAULT);
@@ -102,28 +102,28 @@ public class GPSService extends Service {
 
             @Override
             public void onProviderDisabled(String provider) {
-                Log.e(TAG, "onProviderDisabled: " + provider);
+                Log.e(TAG, "GPSService::onProviderDisabled(): " + provider);
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-                Log.e(TAG, "onProviderEnabled: " + provider);
+                Log.e(TAG, "GPSService::onProviderEnabled(): " + provider);
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                Log.e(TAG, "onStatusChanged: " + provider + " " + status);
+                Log.e(TAG, "GPSService::onStatusChanged(): " + provider + " " + status);
             }
         };
         //noinspection MissingPermission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "no permission granted");
+            Log.e(TAG, "GPSService::onCreate(): no permission granted");
             return;
         }
         if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
-            Log.i(TAG, "network provider not enabled");
+            Log.e(TAG, "GPSService::onCreate(): network provider not enabled");
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            Log.i(TAG, "gps provider not enabled");
+            Log.e(TAG, "GPSService::onCreate(): gps provider not enabled");
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, sharedPreferences.getInt("delay",20000), 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, sharedPreferences.getInt("delay",20000), 0, locationListener);
         super.onCreate();
@@ -150,7 +150,7 @@ public class GPSService extends Service {
                         Math.cos(lati2);
         double rad = 6371;
         double c = 2 * Math.asin(Math.sqrt(a));
-        Log.i(TAG, "distance: " + rad * c + "km");
+        Log.i(TAG, "GPSService::getDistance(): " + rad * c + "km");
         return rad * c * 1000;
     }
 

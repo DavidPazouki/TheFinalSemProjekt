@@ -1,11 +1,9 @@
 package at.fhooe.mc.android.Arrived;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,7 +22,7 @@ import java.util.List;
 
 public class CreateEntry extends AppCompatActivity {
 
-    private static final String TAG = "CreateEntry";
+    private static final String TAG = "xdd";
     EditText name;
     EditText phoneNumber;
     EditText message;
@@ -39,6 +37,7 @@ public class CreateEntry extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "CreateEntry::onCreate(): activity created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_entry);
         name = findViewById(R.id.name);
@@ -70,12 +69,10 @@ public class CreateEntry extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
         Button create = findViewById(R.id.createbutton);
@@ -83,6 +80,7 @@ public class CreateEntry extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (everythingFilledOut()) {
+                    Log.i(TAG, "CreateEntry::onClick(): returning new entry");
                     Intent i = new Intent();
                     i.putExtra("name", name.getText().toString());
                     i.putExtra("phoneNumber", phoneNumber.getText().toString());
@@ -93,8 +91,10 @@ public class CreateEntry extends AppCompatActivity {
                     i.putExtra("radius", radius);
                     setResult(RESULT_OK, i);
                     finish();
-                } else
+                } else {
                     Toast.makeText(getApplicationContext(), "Please fill out everything!", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "CreateEntry::onClick(): something is not filled out");
+                }
             }
         });
     }
@@ -103,10 +103,7 @@ public class CreateEntry extends AppCompatActivity {
         return (!name.getText().toString().equals("") && !phoneNumber.getText().toString().equals("") && !message.getText().toString().equals("") && foundLocation);
     }
 
-
     private void init() {
-        Log.d(TAG, "init: initializing");
-
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -114,28 +111,22 @@ public class CreateEntry extends AppCompatActivity {
                         || actionId == EditorInfo.IME_ACTION_DONE
                         || keyEvent.getAction() == KeyEvent.ACTION_DOWN
                         || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
-
-                    //execute our method for searching
                     geoLocate();
                 }
-
                 return false;
             }
         });
     }
 
     private void geoLocate() {
-        Log.d(TAG, "geoLocate: geolocating");
-
         String searchString = mSearchText.getText().toString();
         Geocoder geocoder = new Geocoder(CreateEntry.this);
         List<Address> list = new ArrayList<>();
         try {
             list = geocoder.getFromLocationName(searchString, 1);
         } catch (IOException e) {
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
+            Log.e(TAG, "CreateEntry::geoLocate(): IOException: " + e.getMessage());
         }
-
         if (list.size() > 0) {
             foundLocation = true;
             Address address = list.get(0);
@@ -143,9 +134,10 @@ public class CreateEntry extends AppCompatActivity {
             place = address.getAddressLine(0);
             lon = (float) address.getLongitude();
             lat = (float) address.getLatitude();
-            Log.d(TAG, "geoLocate: found a location: " + address.toString());
+            Log.i(TAG, "CreateEntry::geoLocate(): found a location: " + address.toString());
         } else {
             foundLocation = false;
+            Log.e(TAG, "CreateEntry::geoLocate(): found no location");
         }
     }
 }

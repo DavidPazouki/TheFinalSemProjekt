@@ -3,11 +3,14 @@ package at.fhooe.mc.android.Arrived;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class InsideListView extends AppCompatActivity {
+
+    private static final String TAG = "xdd";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class InsideListView extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i(TAG, "InsideListView::onCreate(): clicked on delete button");
                 DeleteDialogFragment deleteDialogFragment = newInstance(getIntent().getStringExtra("name"));
                 deleteDialogFragment.show(getSupportFragmentManager(), "delete");
             }
@@ -49,6 +53,7 @@ public class InsideListView extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i(TAG, "InsideListView::onCreate(): clicked on return button");
                 returnWithoutDelete();
             }
         });

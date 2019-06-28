@@ -5,21 +5,26 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.widget.Toast;
 
 public class DeleteDialogFragment extends DialogFragment {
+
+    private static final String TAG = "xdd";
     public String deleteName;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Log.i(TAG, "DeleteDialogFragment::onCreateDialog(): dialog created");
         deleteName = getArguments().getString("name");
         AlertDialog.Builder bob = new AlertDialog.Builder(getContext());
-        bob.setMessage("You really wanna delete???");
+        bob.setMessage("Do you really want to delete the entry?");
         //if okay: make toast, item gets deleted in main activity
         bob.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getContext(), "rip", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "DeleteDialogFragment::onCreateDialog(): item gets deleted");
+                Toast.makeText(getContext(), deleteName + " deleted", Toast.LENGTH_SHORT).show();
                 ((InsideListView)getActivity()).itemGetsDeleted(deleteName);
             }
         });
@@ -27,6 +32,7 @@ public class DeleteDialogFragment extends DialogFragment {
         bob.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Log.i(TAG, "DeleteDialogFragment::onCreateDialog(): return to InsideListView");
             }
         });
         Dialog d = bob.create();

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class CustomListAdapter extends ArrayAdapter {
 
+    private static final String TAG = "xdd";
     //to reference the Activity
     private final Activity context;
     private final ArrayList<String> names;
