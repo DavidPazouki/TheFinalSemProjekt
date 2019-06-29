@@ -9,13 +9,21 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.widget.Toast;
 
+/**
+ * this fragment gets started when somebody pressed on the deletebutton in insidelistview
+ */
 public class DeleteDialogFragment extends DialogFragment {
 
     private static final String TAG = "xdd";
     public String deleteName;
 
+    /**
+     * whenever the dialogfragment gets started
+     * @param savedInstanceState saved instance
+     * @return returns a dialog
+     */
     @NonNull
-    @Override //when dialog gets created
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Log.i(TAG, "DeleteDialogFragment::onCreateDialog(): dialog created");
         deleteName = getArguments().getString("name");

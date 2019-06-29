@@ -19,6 +19,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * this activity is the launcheractivity
+ * responsible for displaying the list entries, switching to settings and switching to creating an entry
+ */
 public class MainActivity extends AppCompatActivity {
 
     //storing important information
@@ -40,7 +44,12 @@ public class MainActivity extends AppCompatActivity {
     public int newRadius;
     CustomListAdapter customListAdapter;
 
-    @Override //this happens when you start the app
+    /**
+     *this gets called when the app gets started
+     * responsible for switching to other activities, displaying the list and the fab
+     * @param savedInstanceState saved instance
+     */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -97,7 +106,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override //whenever you get an result from an activity
+    /**
+     * gets called when the activity gets an result from another activity
+     * @param requestCode the code with the activity has been started
+     * @param resultCode tells you if the result is okay or there is no result
+     * @param data intent in which the data is stored
+     */
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case CREATE_ENTRY: {
@@ -127,7 +142,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //loading data
+    /**
+     * this method gets called when the data has to be loaded out of sharedpreferences(onCreate())
+     */
     private void loadData() {
         names = loadArrayString("name");
         messages = loadArrayString("message");
@@ -143,7 +160,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //method to get stringarrays out of shared preferences
+    /**
+     * this method gets you the requested string data out of the sharedprefences
+     * @param arrayName the key for the shared preferences
+     * @return arraylist with the requested data
+     */
     public ArrayList<String> loadArrayString(String arrayName) {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("entries", MODE_PRIVATE);
         ArrayList<String> list = new ArrayList<>();
@@ -158,7 +179,12 @@ public class MainActivity extends AppCompatActivity {
         return list;
     }
 
-    //method to get intarrays out of shared preferences and save them in string arrays
+
+    /**
+     * this method gets you the requested int data out of the sharedprefences
+     * @param arrayName the key for the shared preferences
+     * @return arraylist with the requested data
+     */
     public ArrayList<String> loadArrayInt(String arrayName) {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("entries", MODE_PRIVATE);
         ArrayList<String> list = new ArrayList<>();
@@ -171,7 +197,9 @@ public class MainActivity extends AppCompatActivity {
         return list;
     }
 
-    //if name and date are set:
+    /**
+     * this method gets called after the activity has received a new entry
+     */
     public void add() {
         places.add(newPlace);
         names.add(newName);
@@ -185,7 +213,9 @@ public class MainActivity extends AppCompatActivity {
         startService(new Intent(this, GPSService.class));
     }
 
-    //the process of adding new stuff to the shared preferences
+    /**
+     * adds the new entry to the shared preferences
+     */
     private void addToSharedPreferences() {
         entries++;
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("entries", MODE_PRIVATE);
@@ -201,7 +231,10 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    //deleting the entry in the arraylists
+    /**
+     * this method gets called after the activity has received an entry to delete
+     * @param deleteName name of the entry which has to be deleted
+     */
     private void delete(String deleteName) {
         int x = names.indexOf(deleteName);
         deleteInSharedPreferences(deleteName);
@@ -214,7 +247,10 @@ public class MainActivity extends AppCompatActivity {
         startService(new Intent(this, GPSService.class));
     }
 
-    //deleting the entry in the shared preferences
+    /**
+     * deletes entries from the shared preferences
+     * @param deleteName name of the entry which has to be deleted
+     */
     public void deleteInSharedPreferences(String deleteName) {
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("entries", MODE_PRIVATE);
         for (int i = 0; i < entries; i++) {
@@ -237,13 +273,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override //inflates the options menu
+    /**
+     * inflates option menu
+     * @param menu the menu
+     * @return if failed or not
+     */
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    @Override //if an option in the options menu is selected
+    /**
+     * this method gets called whenever an item from the option menu has benn selected
+     * @param item the item which has been clicked
+     * @return if failed or not
+     */
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //starting options menu
         Intent intent = new Intent(MainActivity.this, AppSettings.class);

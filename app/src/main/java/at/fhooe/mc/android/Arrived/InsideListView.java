@@ -8,10 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * this activity gets called when you click on an list entry in MainActivity
+ */
 public class InsideListView extends AppCompatActivity {
 
     private static final String TAG = "xdd";
 
+    /**
+     * this method gets called whenever the activity gets started
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

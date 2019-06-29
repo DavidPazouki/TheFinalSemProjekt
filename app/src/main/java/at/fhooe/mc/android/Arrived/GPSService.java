@@ -20,6 +20,9 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 
+/**
+ * this class is the geofencing service, it always runs in the background
+ */
 public class GPSService extends Service {
 
     private static final String TAG = "xdd";
@@ -32,11 +35,22 @@ public class GPSService extends Service {
     private LocationManager locationManager;
     private LocationListener locationListener;
 
+    /**
+     * this method gets called whenever the service gets started
+     * @param intent intent to give information
+     * @param flags flags
+     * @param startId startId
+     * @return START_STICKY, to restart the activity after it got stoped internally
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return START_STICKY;
     }
 
+    /**
+     * this method gets called whenever the service gets created,
+     * it fetches the all the data out of the shared preferences and listens for location changes
+     */
     @Override
     public void onCreate() {
         Log.i(TAG, "GPSService::onCreate(): service started");
@@ -62,6 +76,12 @@ public class GPSService extends Service {
         //creating locationmanager and locationlistener
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
+            /**
+             * this method gets called whenever the location changes,
+             * if the location is near enough (defined by radius), it sends the sms,
+             * creates a notification and deletes the entry from the sharedpreferences
+             * @param location the actual location
+             */
             @Override
             public void onLocationChanged(Location location) {
                 Log.i(TAG, "GPSService::onLocationChanged(): " + location);
@@ -143,6 +163,14 @@ public class GPSService extends Service {
         return null;
     }
 
+    /**
+     * formula to calculate the distance (in meter) between to places (in longitude and latitude)
+     * @param lon1 the destination longitude
+     * @param lat1 the destination latitude
+     * @param lon2 the actual longitude
+     * @param lat2 the actual latitude
+     * @return distance in meter
+     */
     private double getDistance(double lon1, double lat1, double lon2, double lat2) {
         // distance between latitudes and longitudes
         double dLat = Math.toRadians(lat2 - lat1);
@@ -161,6 +189,9 @@ public class GPSService extends Service {
         return rad * c * 1000;
     }
 
+    /**
+     * this method gets called when the service gets stoped
+     */
     @Override
     public void onDestroy() {
         Log.i(TAG, "GPSService::onDestroy(): service destroyed");

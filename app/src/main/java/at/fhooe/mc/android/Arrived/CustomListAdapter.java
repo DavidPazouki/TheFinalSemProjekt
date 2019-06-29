@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * this class is responsible for displaying an entry on the MainActivity
+ */
 public class CustomListAdapter extends ArrayAdapter {
 
     private static final String TAG = "xdd";
@@ -26,6 +29,13 @@ public class CustomListAdapter extends ArrayAdapter {
         this.places = places;
     }
 
+    /**
+     * in this method the right data gets places on the right spot
+     * @param position position of the entry
+     * @param view empty view
+     * @param parent parent
+     * @return returns a view with the entry
+     */
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.listview_row, null, true);

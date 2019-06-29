@@ -9,6 +9,9 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+/**
+ * this activity is there to change settings
+ */
 public class AppSettings extends AppCompatActivity {
 
     private static final String TAG = "xdd";
@@ -16,6 +19,10 @@ public class AppSettings extends AppCompatActivity {
     SeekBar delayChanger;
     int delay;
 
+    /**
+     * gets called when the activity starts, displays the different objects
+     * @param savedInstanceState saved instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +75,6 @@ public class AppSettings extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override

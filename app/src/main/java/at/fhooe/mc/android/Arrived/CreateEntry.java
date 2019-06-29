@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this activity starts after the fab in MainActivity has been pressed
+ */
 public class CreateEntry extends AppCompatActivity {
 
     private static final String TAG = "xdd";
@@ -35,7 +38,11 @@ public class CreateEntry extends AppCompatActivity {
     boolean foundLocation = false;
     private AutoCompleteTextView mSearchText;
 
-    @Override //after fab has been pressed
+    /**
+     * this method gets called whenever the activity starts
+     * @param savedInstanceState saved instance
+     */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "CreateEntry::onCreate(): activity created");
         radius = 2000;
@@ -103,12 +110,17 @@ public class CreateEntry extends AppCompatActivity {
         });
     }
 
-    //just a huge condition
+    /**
+     * this method checks if all the edittexts are filled out
+     * @return true if everything filled out, else false
+     */
     private boolean everythingFilledOut() {
         return (!name.getText().toString().equals("") && !phoneNumber.getText().toString().equals("") && !message.getText().toString().equals("") && foundLocation);
     }
 
-    //initialize the geolocation edittext
+    /**
+     * set actionlistener on the edittext which is responsible for geolocating and check things
+     */
     private void init() {
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -124,7 +136,9 @@ public class CreateEntry extends AppCompatActivity {
         });
     }
 
-    //using the api to find a location
+    /**
+     * using the google api to geolocate, sets the edittext to the entry which has been found
+     */
     private void geoLocate() {
         String searchString = mSearchText.getText().toString();
         Geocoder geocoder = new Geocoder(CreateEntry.this);
