@@ -45,21 +45,21 @@ public class AppSettings extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 if (progress <= 8) {
                     progress = progress + 1;
-                    delayDisplay.setText("Location query delay: " + progress + " s");
+                    delayDisplay.setText(getString(R.string.location_query_delay) +" " + progress + " s");
                     delay = progress * 1000;
                 } else if (progress > 8 && progress <= 13) {
                     progress = (progress - 8) * 10;
-                    delayDisplay.setText("Location query delay: " + progress + " s");
+                    delayDisplay.setText(getString(R.string.location_query_delay) +" " + progress + " s");
                     delay = progress * 1000;
                 } else if (progress > 13 && progress <= 18) {
                     progress = progress - 13;
-                    delayDisplay.setText("Location query delay: " + progress + " m");
+                    delayDisplay.setText(getString(R.string.location_query_delay) +" " + progress + " m");
                     delay = progress * 60000;
                 } else if (progress == 19) {
-                    delayDisplay.setText("Location query delay: 10 m");
+                    delayDisplay.setText(getString(R.string.location_query_delay) +" " +10 +" m");
                     delay = 600000;
                 } else {
-                    delayDisplay.setText("Location query delay: 30 m");
+                    delayDisplay.setText(getString(R.string.location_query_delay) +" "+ 30 +" m");
                     delay = 1800000;
                 }
                 editor.putInt("delay", delay);

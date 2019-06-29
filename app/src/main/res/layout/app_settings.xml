@@ -12,12 +12,22 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="20sp"
+            android:id="@+id/options_"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/options_info"
+            android:textColor="@color/quantum_greyblack1000"
+            android:layout_margin="16dp"
+            android:textSize="25sp" />
+
+        <TextView
             android:id="@+id/options_delayText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location query delay:"
-            android:textSize="25sp" />
+            android:textColor="@color/quantum_greyblack1000"
+            android:text="@string/options_location_query_delay"
+            android:layout_margin="16dp"
+            android:textSize="21sp" />
 
         <SeekBar
             android:id="@+id/options_delaySeekBar"
@@ -25,15 +35,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="20"
+            android:layout_margin="16dp"
             android:progress="10" />
 
         <Switch
             android:id="@+id/switch3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:saveEnabled="true"
 
-            android:text="newest entry first"
-            android:textSize="25sp" />
+            android:text="@string/options_newest_entry_first"
+            android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/options_restart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/quantum_greyblack1000"
+            android:text="@string/options_restart"
+            android:layout_margin="16dp"
+            android:textSize="21sp" />
     </LinearLayout>
 </FrameLayout>

@@ -19,23 +19,23 @@ public class InsideListView extends AppCompatActivity {
         //the 5 edittexts
         String savedExtra = getIntent().getStringExtra("name");
         TextView myText = findViewById(R.id.inside_listview_name);
-        myText.setText("Name: " + savedExtra);
+        myText.setText("Name:\n" + savedExtra);
 
         savedExtra = getIntent().getStringExtra("phoneNumber");
         myText = findViewById(R.id.inside_listview_phoneNumber);
-        myText.setText("Telefonnummer: " + savedExtra);
+        myText.setText("Phone number:\n" + savedExtra);
 
         savedExtra = getIntent().getStringExtra("message");
         myText = findViewById(R.id.inside_listview_message);
-        myText.setText("Nachricht: " + savedExtra);
+        myText.setText("Message:\n" + savedExtra);
 
         savedExtra = getIntent().getStringExtra("place");
         myText = findViewById(R.id.inside_listview_place);
-        myText.setText("Adresse: " + savedExtra);
+        myText.setText("Address:\n" + savedExtra);
 
         savedExtra = getIntent().getStringExtra("radius");
         myText = findViewById(R.id.inside_listview_radius);
-        myText.setText("Radius: " + savedExtra + " m");
+        myText.setText("Radius:\n" + savedExtra + " m");
 
         //the delete button
         Button button = findViewById(R.id.delete);

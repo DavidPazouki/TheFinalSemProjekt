@@ -88,9 +88,9 @@ public class GPSService extends Service {
                             NotificationManager notificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
                             notificationManager.createNotificationChannel(notificationChannel);
                             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "sms")
-                                    .setSmallIcon(R.drawable.birthdaycake)
+                                    .setSmallIcon(R.drawable.arrivedicon)
                                     .setContentTitle("Arrived")
-                                    .setContentText("A sms has been sent to " + sharedPreferences1.getString("name_" +i,"somebody"));
+                                    .setContentText(getString(R.string.sms_sent)+" " + sharedPreferences1.getString("name_" +i,"somebody"));
                             notificationManager.notify(0, builder.build());
                             //deleting entry in shared preferences
                             SharedPreferences.Editor editor = sharedPreferences1.edit();

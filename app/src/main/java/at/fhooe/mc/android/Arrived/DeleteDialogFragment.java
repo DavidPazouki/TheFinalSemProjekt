@@ -20,7 +20,7 @@ public class DeleteDialogFragment extends DialogFragment {
         Log.i(TAG, "DeleteDialogFragment::onCreateDialog(): dialog created");
         deleteName = getArguments().getString("name");
         AlertDialog.Builder bob = new AlertDialog.Builder(getContext());
-        bob.setMessage("Do you really want to delete the entry?");
+        bob.setMessage(R.string.delete_fragment_message);
         //if okay: make toast, item gets deleted in main activity
         bob.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override

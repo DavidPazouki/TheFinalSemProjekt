@@ -54,17 +54,17 @@ public class CreateEntry extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (progress <= 8) {
                     progress = progress * 100 + 100;
-                    radiusDisplay.setText("Radius: " + progress + " m");
+                    radiusDisplay.setText(getString(R.string.create_entry_change_radius)+" " + progress + " m");
                     radius = progress;
                 } else if (progress == 19) {
-                    radiusDisplay.setText("Radius: 20 km");
+                    radiusDisplay.setText(getString(R.string.create_entry_change_radius)+" 20 km");
                     radius = 20000;
                 } else if (progress == 20) {
-                    radiusDisplay.setText("Radius: 50 km");
+                    radiusDisplay.setText(getString(R.string.create_entry_change_radius)+" 50 km");
                     radius = 50000;
                 } else {
                     progress = progress - 8;
-                    radiusDisplay.setText("Radius: " + progress + " km");
+                    radiusDisplay.setText(getString(R.string.create_entry_change_radius)+" " + progress + " km");
                     radius = progress * 1000;
                 }
             }
@@ -94,6 +94,7 @@ public class CreateEntry extends AppCompatActivity {
                     i.putExtra("radius", radius);
                     setResult(RESULT_OK, i);
                     finish();
+                    Toast.makeText(getApplicationContext(), name.getText().toString() + " added", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Please fill out everything!", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "CreateEntry::onClick(): something is not filled out");

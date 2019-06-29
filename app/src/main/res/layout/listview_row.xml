@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        app:srcCompat="@drawable/birthdaycake" />
+        app:srcCompat="@drawable/logo" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,6 @@
             android:id="@+id/nameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/textview"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -34,7 +33,6 @@
             android:id="@+id/messageTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
             android:maxLines="1"
             android:textSize="18sp" />
 
@@ -42,7 +40,6 @@
             android:id="@+id/placeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
             android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>
